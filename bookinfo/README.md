@@ -125,3 +125,29 @@ docker compose up -d
 
 vim harbor.yml 查看初始密码
 ![alt text](image.png)
+
+## Harbor镜像推送与客户端证书配置
+vim /etc/hosts
+末尾添加 192.168.171.133 harbor.com
+
+
+配置文件永久跳过
+```
+# 1. 编辑 Docker 配置文件
+sudo nano /etc/docker/daemon.json
+
+# 2. 添加私有仓库到不安全列表（多行用逗号分隔）
+{
+  "insecure-registries": ["harbor.com"],
+}
+
+# 3. 重启 Docker 服务
+sudo systemctl restart docker
+```
+
+docker login harbor.com
+admin
+Harbor12345
+
+docker push  harbor.com/test/bookinfo:v0.1
+
