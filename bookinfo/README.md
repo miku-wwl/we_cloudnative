@@ -151,3 +151,6 @@ Harbor12345
 
 docker push  harbor.com/test/bookinfo:v0.1
 
+
+## Docker 容器与镜像的相互转换
+docker commit id bookinfo:v0.2
