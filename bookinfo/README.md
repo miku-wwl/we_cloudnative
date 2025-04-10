@@ -19,3 +19,10 @@ go get -u github.com/gin-gonic/gin@v1.10.0
 ## 功能开发
 - [x] 首页（展示服务间的调用关系）
 - [x] 图书详情页
+
+
+## Bookinfo docker构建部署
+在bookinfo目录下使用指令
+docker build -t bookinfo:v0.1 .
+docker run -p8002:8080 -d  bookinfo:v0.1
+curl localhost:8002
