@@ -1,0 +1,19 @@
+FROM golang:1.22.3-alpine3.20 as builder
+WORKDIR /
+COPY . .
+RUN go env -w GOPROXY=https://goproxy.cn,direct
+RUN go build -o bk
+
+FROM alpine:3.20
+# apt包管理的操作方式
+# RUN apt update \
+#     && apt install curl --no-install-recommends -y \
+#     && apt clean \
+#     && rm -rf /var/lib/apt/lists/*
+RUN truncate -s 100M test.text && rm -rf test.text
+RUN apk --update --no-cache add curl
+WORKDIR /
+COPY templates /templates
+COPY static /static
+COPY --from=builder /bk /
+ENTRYPOINT [ "/bk","serve"]

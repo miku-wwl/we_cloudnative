@@ -1,10 +1,10 @@
 FROM golang:1.22.3-alpine3.20 as builder
 WORKDIR /
 COPY . .
-RUN [ ! -d "vendor" ] && go env -w GOPROXY=https://goproxy.cn,direct || echo "skipping"
+RUN go env -w GOPROXY=https://goproxy.cn,direct
 RUN go build -o bk
 
-FROM alpine:3.20-bookinfo-base
+FROM alpine:3.20
 WORKDIR /
 COPY templates /templates
 COPY static /static
