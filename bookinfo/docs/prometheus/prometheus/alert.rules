@@ -1,0 +1,13 @@
+groups:
+- name: example
+  rules:
+  - alert: HighRequestCount
+    expr: increase(prometheus_http_requests_total{handler='/targets',code='200'}[1m]) > 20
+    # 满足条件后 等待xx时间后触发告警
+    for: 10s
+    # 告警附加标签
+    labels:
+      severity: warning
+    annotations:
+      summary: "High number of requests to /targets"
+      description: "The number of successful requests to /targets is greater than 20 in the last minute."

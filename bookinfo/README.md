@@ -154,3 +154,20 @@ docker push  harbor.com/test/bookinfo:v0.1
 
 ## Docker 容器与镜像的相互转换
 docker commit id bookinfo:v0.2
+
+
+
+
+Harbor 服务运行状态监控
+cd /opt/harbor/harbor/
+vim harbor.yml
+```
+metric:
+  enabled: true
+  port: 9095
+  path: /metrics
+```
+./prepare
+vim docker-compose.yml 查看9095端口是否启动
+docker compose up -d
+curl localhost:9095/metrics

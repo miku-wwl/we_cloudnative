@@ -7,9 +7,12 @@ import (
 	"bytes"
 	"html/template"
 	"net/http"
+	_ "net/http/pprof"
+
 	"os"
 
 	"github.com/gin-gonic/gin"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/spf13/cobra"
 )
 
@@ -147,6 +150,10 @@ var serveCmd = &cobra.Command{
 				"message": "pong",
 			})
 		})
+		go func() {
+			http.Handle("/metrics", promhttp.Handler())
+			http.ListenAndServe(":6060", nil)
+		}()
 		r.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 	},
 }

@@ -1,0 +1,8 @@
+services:
+
+  bookinfo:
+    container_name: bookinfo
+    image: harbor.com/containers/bookinfo:v1.2
+    ports:
+      - 9080:8080
+      - 9060:6060
