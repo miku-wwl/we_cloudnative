@@ -158,7 +158,7 @@ docker commit id bookinfo:v0.2
 
 
 
-Harbor 服务运行状态监控
+## Harbor 服务运行状态监控
 cd /opt/harbor/harbor/
 vim harbor.yml
 ```
@@ -171,3 +171,15 @@ metric:
 vim docker-compose.yml 查看9095端口是否启动
 docker compose up -d
 curl localhost:9095/metrics
+
+
+
+## 理解声明式API特性
+
+## 理解声明式API特性
+
+## kubernetes安装选型
+
+## MiniKube环境搭建
+
+## kubernetes核心技能提炼
