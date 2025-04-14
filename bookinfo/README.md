@@ -173,6 +173,14 @@ docker compose up -d
 curl localhost:9095/metrics
 
 
+## Harbor 访问失败定位
+通过docker ps | grep harbor 发现 harbor 启动的container很少
+使用docker logs -f container_id
+发现以来的redis未启动
+
+解决方案
+进入harbor 目录，重启harbor即可
+
 
 ## 理解声明式API特性
 
@@ -183,3 +191,5 @@ curl localhost:9095/metrics
 ## MiniKube环境搭建
 
 ## kubernetes核心技能提炼
+
+
