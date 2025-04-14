@@ -176,6 +176,9 @@ curl localhost:9095/metrics
 ## Harbor 访问失败定位
 通过docker ps | grep harbor 发现 harbor 启动的container很少
 使用docker logs -f container_id
+
+2025-04-14T16:06:08Z [ERROR] [/lib/cache/cache.go:126]: failed to ping redis://redis:6379?idle_timeout_seconds=30, retry after 1.734749814s : dial tcp 104.18.25.196:6379: i/o timeout
+
 发现以来的redis未启动
 
 解决方案
