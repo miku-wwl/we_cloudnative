@@ -17,7 +17,7 @@ spec:
       - name: secret-tiger-docker
       containers: 
       - name: bookinfo
-        image: harbor.imooc.com/imooc-containers/bookinfo:v1.2
+        image: harbor.com/containers/bookinfo:v1.2
         ports: 
         - name: web
           containerPort: 8080

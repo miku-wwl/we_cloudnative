@@ -3,7 +3,7 @@ imagePullSecrets:
 - name: secret-tiger-docker
 
 image: 
-  repository: harbor.imooc.com/imooc-containers/bookinfo
+  repository: harbor.com/containers/bookinfo
   tag: v1.2
 
-host: bookinfo.imooc.com   
+host: bookinfo.com   

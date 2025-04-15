@@ -1,3 +1,3 @@
 minikube addons enable ingress \
 --images='IngressController=ingress-nginx/controller:v1.10.1,KubeWebhookCertgenCreate=ingress-nginx/kube-webhook-certgen:v1.4.1,KubeWebhookCertgenPatch=ingress-nginx/kube-webhook-certgen:v1.4.1' \
---registries='IngressController=harbor.imooc.com,KubeWebhookCertgenCreate=harbor.imooc.com,KubeWebhookCertgenPatch=harbor.imooc.com'
+--registries='IngressController=harbor.com,KubeWebhookCertgenCreate=harbor.com,KubeWebhookCertgenPatch=harbor.com'

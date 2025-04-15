@@ -2,7 +2,7 @@
 #   --docker-email=tiger@acme.example \
 #   --docker-username=admin \
 #   --docker-password=Harbor12345 \
-#   --docker-server=harbor.imooc.com
+#   --docker-server=harbor.com
 apiVersion: v1
 kind: Pod
 metadata: 
@@ -13,7 +13,7 @@ spec:
   - name: secret-tiger-docker
   containers: 
   - name: bookinfo
-    image: harbor.imooc.com/imooc-containers/bookinfo:v1.2
+    image: harbor.com/containers/bookinfo:v1.2
     ports: 
     - name: web
       containerPort: 8080
