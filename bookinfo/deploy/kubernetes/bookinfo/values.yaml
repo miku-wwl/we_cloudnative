@@ -6,4 +6,4 @@ image:
   repository: harbor.com/containers/bookinfo
   tag: v1.2
 
-host: bookinfo.com   
+host: bookinfo.weilai.com   
