@@ -1,0 +1,15 @@
+resources:
+- ../base
+namePrefix: imooc-
+nameSuffix: -dev
+namespace: test
+
+patches:
+- path: set_memory.yaml
+
+- target: 
+    version: v1
+    group: networking.k8s.io
+    kind: Ingress
+    name: bookinfo
+  path: set_host.yaml

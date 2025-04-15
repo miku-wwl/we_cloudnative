@@ -1,0 +1,9 @@
+replicaCount: 3
+imagePullSecrets:
+- name: secret-tiger-docker
+
+image: 
+  repository: harbor.imooc.com/imooc-containers/bookinfo
+  tag: v1.2
+
+host: bookinfo.imooc.com   

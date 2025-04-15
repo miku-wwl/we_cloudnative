@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+   name: bookinfo
+spec: 
+  replicas: 3
+  selector: 
+    matchLabels:
+      app: bookinfo
+  template:
+    metadata: 
+      labels: 
+        app: bookinfo
+    spec: 
+      imagePullSecrets:
+      - name: secret-tiger-docker
+      containers: 
+      - name: bookinfo
+        image: harbor.imooc.com/imooc-containers/bookinfo:v1.2
+        ports: 
+        - name: web
+          containerPort: 8080
+          # hostPort: 9081

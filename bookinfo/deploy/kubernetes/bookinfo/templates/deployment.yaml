@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+   name: bookinfo
+spec: 
+  replicas: {{ .Values.replicaCount }}
+  selector: 
+    matchLabels:
+      app: bookinfo
+  template:
+    metadata: 
+      labels: 
+        app: bookinfo
+    spec:
+      {{- with .Values.imagePullSecrets  }}
+      imagePullSecrets:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers: 
+      - name: bookinfo
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+        ports: 
+        - name: web
+          containerPort: 8080
+          # hostPort: 9081
