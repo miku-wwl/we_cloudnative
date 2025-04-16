@@ -1,6 +1,6 @@
 resources:
 - ../base
-namePrefix: ""
+namePrefix: weilai-
 nameSuffix: -dev
 namespace: test
 
@@ -13,3 +13,22 @@ patches:
     kind: Ingress
     name: bookinfo
   path: set_host.yaml
+
+# kubectl 1.20 使用
+# bases:
+# - ../base/
+
+# namePrefix: weilai-
+# nameSuffix: -dev
+# namespace: test
+
+# patchesStrategicMerge:
+# - set_memory.yaml
+
+# patchesJson6902:
+# - target:
+#     version: v1
+#     group: networking.k8s.io
+#     kind: Ingress
+#     name: bookinfo
+#   path: set_host.yaml
