@@ -3,6 +3,12 @@ resources:
 namePrefix: weilai-
 nameSuffix: -dev
 namespace: test
+commonLabels:
+  app: bookinfo
+images:
+- name: bookinfo
+  newName: harbor.com/containers/bookinfo
+  newTag: v1.3
 
 patches:
 - path: set_memory.yaml
@@ -21,6 +27,12 @@ patches:
 # namePrefix: weilai-
 # nameSuffix: -dev
 # namespace: test
+# commonLabels:
+#   app: bookinfo
+# images:
+# - name: bookinfo
+#   newName: harbor.com/containers/bookinfo
+#   newTag: v1.3
 
 # patchesStrategicMerge:
 # - set_memory.yaml
