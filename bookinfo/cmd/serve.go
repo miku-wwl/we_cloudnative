@@ -14,6 +14,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/spf13/cobra"
+	ginprometheus "github.com/zsais/go-gin-prometheus"
 )
 
 type Base struct {
@@ -62,6 +63,8 @@ var serveCmd = &cobra.Command{
 	Long:  `start bookinfo server.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		r := gin.Default()
+		p := ginprometheus.NewPrometheus("gin")
+		p.Use(r)
 		r.Static("/static", "./static")
 		r.GET("/productpage", func(c *gin.Context) {
 			data, _ := os.ReadFile("templates/productpage.html")
@@ -150,6 +153,7 @@ var serveCmd = &cobra.Command{
 				"message": "pong",
 			})
 		})
+
 		go func() {
 			http.Handle("/metrics", promhttp.Handler())
 			http.ListenAndServe(":6060", nil)

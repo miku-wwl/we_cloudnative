@@ -16,6 +16,41 @@ export PATH=$PATH:$GOBIN
 go get -u github.com/gin-gonic/gin@v1.10.0
 ```
 
+
+安装[Gin](https://github.com/gin-gonic/gin)
+```
+go get -u github.com/gin-gonic/gin@v1.10.0
+```
+
+安装[Gin指标采集](github.com/zsais/go-gin-prometheus)
+
+`$ go get github.com/zsais/go-gin-prometheus`
+
+`demo.go`
+```
+package main
+
+import (
+  "github.com/gin-gonic/gin"
+  "github.com/zsais/go-gin-prometheus"
+)
+
+func main() {
+  r := gin.New()
+
+  p := ginprometheus.NewPrometheus("gin")
+  p.Use(r)
+
+  r.GET("/", func(c *gin.Context) {
+    c.JSON(200, "Hello world!")
+  })
+
+  r.Run(":29090")
+}
+```
+
+
+
 ## 功能开发
 - [x] 首页（展示服务间的调用关系）
 - [x] 图书详情页
