@@ -1,0 +1,4 @@
+## Append samples of your project ##
+resources:
+- bookinfo_v1beta1_bookinfo.yaml
+# +kubebuilder:scaffold:manifestskustomizesamples

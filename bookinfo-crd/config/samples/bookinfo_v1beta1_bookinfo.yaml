@@ -1,0 +1,10 @@
+apiVersion: bookinfo.com/v1beta1
+kind: Bookinfo
+metadata:
+  name: bookinfo-sample
+spec:
+  imagePullSecrets: 
+  - secret-tiger-docker
+  image: harbor.com/containers/bookinfo:v1.3
+  replicas: 1
+  host: bookinfo-dev.com

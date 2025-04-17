@@ -1,0 +1,23 @@
+# permissions for end users to view bookinfoes.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: bookinfo-crd
+    app.kubernetes.io/managed-by: kustomize
+  name: bookinfo-viewer-role
+rules:
+- apiGroups:
+  - bookinfo.com
+  resources:
+  - bookinfoes
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - bookinfo.com
+  resources:
+  - bookinfoes/status
+  verbs:
+  - get
