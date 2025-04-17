@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata: 
+   name: bookinfo-web
+spec: 
+  selector:
+   app: bookinfo-web
+  ports: 
+  - name: web
+    port: 80
+    targetPort: 8080

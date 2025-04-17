@@ -1,6 +1,6 @@
 
 
-IMG := harbor.com/containers/bookinfo-web
+IMG := harbor.com/containers/bookinfo-reviews
 TAG := v1.4
 
 

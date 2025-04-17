@@ -1,0 +1,65 @@
+resources:
+- ../base
+# namePrefix: weilai-
+# nameSuffix: -dev
+namespace: test
+commonLabels:
+  team: weilai
+images: 
+- name: bookinfo-web
+  newName: harbor.com/containers/bookinfo-web
+  newTag: v1.4
+- name: bookinfo-reviews
+  newName: harbor.com/containers/bookinfo-reviews
+  newTag: v1.4
+- name: bookinfo-ratings
+  newName: harbor.com/containers/bookinfo-ratings
+  newTag: v1.4
+- name: bookinfo-productpage
+  newName: harbor.com/containers/bookinfo-productpage
+  newTag: v1.4
+- name: bookinfo-details
+  newName: harbor.com/containers/bookinfo-details
+  newTag: v1.4
+patches:
+- path: set_memory.yaml
+- target: 
+    version: v1
+    group: networking.k8s.io
+    kind: Ingress
+    name: bookinfo
+  path: set_host.yaml
+
+
+# bases:
+# - ../base/
+
+# namespace: test
+# commonLabels:
+#   team: weilai
+# images: 
+# - name: bookinfo-web
+#   newName: harbor.com/containers/bookinfo-web
+#   newTag: v1.4
+# - name: bookinfo-reviews
+#   newName: harbor.com/containers/bookinfo-reviews
+#   newTag: v1.4
+# - name: bookinfo-ratings
+#   newName: harbor.com/containers/bookinfo-ratings
+#   newTag: v1.4
+# - name: bookinfo-productpage
+#   newName: harbor.com/containers/bookinfo-productpage
+#   newTag: v1.4
+# - name: bookinfo-details
+#   newName: harbor.com/containers/bookinfo-details
+#   newTag: v1.4
+# patchesStrategicMerge:
+# - set_memory.yaml
+
+# patchesJson6902:
+# - target:
+#     version: v1
+#     group: networking.k8s.io
+#     kind: Ingress
+#     name: bookinfo
+#   path: set_host.yaml

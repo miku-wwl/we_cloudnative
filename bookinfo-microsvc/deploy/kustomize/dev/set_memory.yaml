@@ -1,0 +1,12 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bookinfo-web
+spec:
+  template:
+    spec:
+      containers:
+      - name: bookinfo-web
+        resources: 
+          limits: 
+            memory: 512Mi

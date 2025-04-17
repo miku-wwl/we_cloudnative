@@ -1,0 +1,63 @@
+
+networks:
+  bookinfo-tier:
+services:
+  web:
+    container_name: web
+    image: harbor.com/containers/bookinfo-web:v1.4
+    volumes:
+      - ./cfg/:/cfg
+    environment:
+      - PORT=8080
+    ports:
+      - 9081:8080
+    depends_on:
+      - productpage
+    networks:
+      - bookinfo-tier
+    restart: always
+  productpage:
+    container_name: productpage
+    image: harbor.com/containers/bookinfo-productpage:v1.4
+    volumes:
+      - ./cfg/:/cfg
+    environment:
+      - PORT=8081
+    depends_on:
+      - reviews
+      - details
+    networks:
+      - bookinfo-tier
+    restart: always
+  reviews:
+    container_name: reviews
+    image: harbor.com/containers/bookinfo-reviews:v1.4
+    volumes:
+      - ./cfg/:/cfg
+    environment:
+      - PORT=8083
+    depends_on:
+      - ratings
+    networks:
+      - bookinfo-tier
+    restart: always
+  details:
+    container_name: details
+    image: harbor.com/containers/bookinfo-details:v1.4
+    volumes:
+      - ./cfg/:/cfg
+    environment:
+      - PORT=8082
+    networks:
+      - bookinfo-tier
+    restart: always
+  ratings:
+    container_name: ratings
+    image: harbor.com/containers/bookinfo-ratings:v1.4
+    volumes:
+      - ./cfg/:/cfg
+    environment:
+      - PORT=8084
+    networks:
+      - bookinfo-tier
+    restart: always

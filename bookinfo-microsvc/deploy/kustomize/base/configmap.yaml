@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata: 
+  name: bookinfo-cfg
+data: 
+  config.yaml: |
+      port: 8080
+      server_map:
+        productpage: "http://bookinfo-productpage"
+        details: "http://bookinfo-details"
+        reviews: "http://bookinfo-reviews"
+        ratings: "http://bookinfo-ratings"

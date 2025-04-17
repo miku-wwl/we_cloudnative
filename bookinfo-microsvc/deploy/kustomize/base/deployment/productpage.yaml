@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+   name: bookinfo-productpage
+spec: 
+  replicas: 1
+  selector: 
+    matchLabels:
+      app: bookinfo-productpage
+  template:
+    metadata: 
+      labels: 
+        app: bookinfo-productpage
+    spec: 
+      imagePullSecrets:
+      - name: secret-tiger-docker
+      containers: 
+      - name: bookinfo-productpage
+        image: bookinfo-productpage
+        imagePullPolicy: Always
+        ports: 
+        - name: web
+          containerPort: 8080
+        volumeMounts: 
+        - name: cfg
+          mountPath: /cfg
+      volumes:
+      - name: cfg
+        configMap:
+           name: bookinfo-cfg
