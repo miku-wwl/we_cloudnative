@@ -7,19 +7,19 @@ commonLabels:
   team: weilai
 images: 
 - name: bookinfo-web
-  newName: harbor.com/containers/bookinfo-web
+  newName: crpi-bbsyw9wy6j39ufia.cn-beijing.personal.cr.aliyuncs.com/containers-wwl/bookinfo-web
   newTag: v1.4
 - name: bookinfo-reviews
-  newName: harbor.com/containers/bookinfo-reviews
+  newName: crpi-bbsyw9wy6j39ufia.cn-beijing.personal.cr.aliyuncs.com/containers-wwl/bookinfo-reviews
   newTag: v1.4
 - name: bookinfo-ratings
-  newName: harbor.com/containers/bookinfo-ratings
+  newName: crpi-bbsyw9wy6j39ufia.cn-beijing.personal.cr.aliyuncs.com/containers-wwl/bookinfo-ratings
   newTag: v1.4
 - name: bookinfo-productpage
-  newName: harbor.com/containers/bookinfo-productpage
+  newName: crpi-bbsyw9wy6j39ufia.cn-beijing.personal.cr.aliyuncs.com/containers-wwl/bookinfo-productpage
   newTag: v1.4
 - name: bookinfo-details
-  newName: harbor.com/containers/bookinfo-details
+  newName: crpi-bbsyw9wy6j39ufia.cn-beijing.personal.cr.aliyuncs.com/containers-wwl/bookinfo-details
   newTag: v1.4
 patches:
 - path: set_memory.yaml

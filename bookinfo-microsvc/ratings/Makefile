@@ -1,6 +1,6 @@
 
 
-IMG := harbor.com/containers/bookinfo-ratings
+IMG := crpi-bbsyw9wy6j39ufia.cn-beijing.personal.cr.aliyuncs.com/containers-wwl/bookinfo-ratings
 TAG := v1.4
 
 
