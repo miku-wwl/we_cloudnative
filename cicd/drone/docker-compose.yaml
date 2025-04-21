@@ -1,0 +1,80 @@
+version: "3.8"
+
+services:
+  drone:
+    image: drone/drone:2
+    container_name: drone-server
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    environment:
+      - DRONE_GITEA_SERVER=http://192.168.171.161:3000
+      - DRONE_GITEA_CLIENT_ID=98ded225-155f-41f5-8d37-fc6e00ac10b2
+      - DRONE_GITEA_CLIENT_SECRET=gto_ntuujujyw6b6wu3ccc7quauggmiqaewglmxyekhdvpp2r6lamk6q
+      - DRONE_RPC_SECRET=super-duper-secret
+      - DRONE_SERVER_HOST=192.168.171.161:8080
+      - DRONE_SERVER_PROTO=http
+      - DRONE_USER_CREATE=username:weilai,machine:false,admin:true
+    volumes:
+      - /opt/drone/data:/data
+  drone-runner-docker:
+    image: drone/drone-runner-docker:1
+    container_name: drone-runner
+    restart: unless-stopped
+    environment:
+      - DRONE_RPC_PROTO=http
+      - DRONE_RPC_HOST=192.168.171.161:8080
+      - DRONE_RPC_SECRET=super-duper-secret
+      - DRONE_RUNNER_CAPACITY=2
+      - DRONE_RUNNER_NAME=docker-runner
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/docker:/etc/docker
+  drone-runner-ssh:
+    image: drone/drone-runner-ssh:1
+    container_name: drone-runner-ssh
+    restart: unless-stopped
+    environment:
+      - DRONE_RPC_PROTO=http
+      - DRONE_RPC_HOST=192.168.171.161:8080
+      - DRONE_RPC_SECRET=super-duper-secret
+      - DRONE_RUNNER_CAPACITY=2
+      - DRONE_RUNNER_NAME=ssh-runner
+
+
+
+# 安装之前，去gitea>设置>应用，0Auth2 申请秘钥填写到docker-compose.yaml。
+
+# 在cicd目录，执行docker-compose -f drone/docker-compose.yaml up -d
+
+# 安装成功后，访问IP+8080端口访问即可。
+
+# 进入项目列表，找到其中一个项目激活，可以在Gitea看到webhook的信息，表示CI环境搭建好了。
+
+# CI环境冒烟测试，编排drone.yaml提交触发构建。
+
+# 场景问题：
+
+# 白名单配置问题，修改gitea的配置app.ini ，添加配置
+# 修改后，记得重启服务。
+
+# 上传 .drone.yml 至测试仓库
+
+# ```
+# kind: pipeline
+# type: ssh
+# name: default
+
+# server:
+#   host: 192.168.171.161
+#   user: miku
+#   password:
+#     from_secret: password
+
+# steps:
+# - name: greeting
+#   commands:
+#   - echo hello world
+# ```
+
+# 进入drone的页面settings>>secrets 把drone所在的虚拟机的密码，创建并保存 
