@@ -4,3 +4,5 @@ server_map:
    details: "http://127.0.0.1:8082"
    reviews: "http://127.0.0.1:8083"
    ratings: "http://127.0.0.1:8084"
+service_name: "details"
+jaeger_host: "192.168.171.149:6831"

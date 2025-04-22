@@ -6,6 +6,7 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"strconv"
 	"time"
@@ -13,13 +14,14 @@ import (
 	"bookinfo.com/reviews/models"
 	"bookinfo.com/reviews/tools"
 	"github.com/gin-gonic/gin"
+	"github.com/opentracing/opentracing-go"
 	"github.com/spf13/cobra"
 	ginprometheus "github.com/zsais/go-gin-prometheus"
 )
 
-func getRating(client *tools.Client, id string) models.RatingWithStatus {
+func getRating(client *tools.Client, id string, header http.Header, parentSpan opentracing.Span) models.RatingWithStatus {
 	url := fmt.Sprintf("%s%s?id=%s", globalCfg.ServerMap["ratings"], "/ratings", id)
-	dataBytes, err := client.Get(url, nil)
+	dataBytes, err := client.Get(url, header, "ratings", parentSpan)
 	ratingWithStatus := models.RatingWithStatus{
 		Base: models.Base{
 			Status: 200,
@@ -45,6 +47,8 @@ func getRating(client *tools.Client, id string) models.RatingWithStatus {
 	return ratingWithStatus
 }
 
+var service_name = "reviews"
+
 // serveCmd represents the serve command
 var serveCmd = &cobra.Command{
 	Use:   "serve",
@@ -54,9 +58,22 @@ var serveCmd = &cobra.Command{
 		r := gin.Default()
 		p := ginprometheus.NewPrometheus("gin")
 		client := tools.NewClient(time.Second * 10)
+		err := tools.InitJaegerClient(globalCfg.ServiceName, globalCfg.JaegerHost)
+		if err != nil {
+			panic(err)
+		}
 		p.Use(r)
 		r.Static("/static", "./static")
 		r.GET("/reviews", func(c *gin.Context) {
+			wireContext, err := opentracing.GlobalTracer().Extract(
+				opentracing.HTTPHeaders,
+				opentracing.HTTPHeadersCarrier(c.Request.Header),
+			)
+			if err != nil {
+				log.Printf("read span context err %v", err)
+			}
+			span := opentracing.StartSpan("hander_"+globalCfg.ServiceName, opentracing.ChildOf(wireContext))
+			defer span.Finish()
 			reviewsBody := models.ReviewsBody{
 				Podname:     "pod-001",
 				Clustername: "cluster-001",
@@ -73,7 +90,7 @@ var serveCmd = &cobra.Command{
 			}
 			for i := 0; i < len(reviewsBody.Reviews); i++ {
 				id := strconv.Itoa(i + 1)
-				reviewsBody.Reviews[i].Rating = getRating(client, id)
+				reviewsBody.Reviews[i].Rating = getRating(client, id, c.Request.Header, span)
 			}
 			c.JSON(http.StatusOK, reviewsBody)
 		})

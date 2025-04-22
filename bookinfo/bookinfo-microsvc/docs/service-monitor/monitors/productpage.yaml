@@ -1,0 +1,15 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: bookinfo-productpage
+  labels:
+    team: weilai
+spec:
+  namespaceSelector:
+    matchNames:
+    - test
+  selector:
+    matchLabels:
+      app: bookinfo-productpage
+  endpoints:
+  - port: web

@@ -10,3 +10,5 @@ data:
         details: "http://bookinfo-details"
         reviews: "http://bookinfo-reviews"
         ratings: "http://bookinfo-ratings"
+      service_name: "-"
+      jaeger_host: "simplest-agent.observability:6831"

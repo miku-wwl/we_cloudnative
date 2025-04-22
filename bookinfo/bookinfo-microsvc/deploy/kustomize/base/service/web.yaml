@@ -2,6 +2,8 @@ apiVersion: v1
 kind: Service
 metadata: 
    name: bookinfo-web
+   labels:
+      app: bookinfo-web
 spec: 
   selector:
    app: bookinfo-web

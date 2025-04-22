@@ -1,3 +1,5 @@
 port: 8080
 server_map:
    productpage: "http://127.0.0.1:8081"
+service_name: "web"
+jaeger_host: "192.168.171.149:6831"

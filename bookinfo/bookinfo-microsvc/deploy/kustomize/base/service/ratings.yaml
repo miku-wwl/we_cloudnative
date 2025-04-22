@@ -2,6 +2,8 @@ apiVersion: v1
 kind: Service
 metadata: 
    name: bookinfo-ratings
+   labels:
+      app: bookinfo-ratings
 spec: 
   selector:
    app: bookinfo-ratings

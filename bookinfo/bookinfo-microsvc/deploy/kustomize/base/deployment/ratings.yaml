@@ -24,6 +24,9 @@ spec:
         volumeMounts: 
         - name: cfg
           mountPath: /cfg
+        env: 
+        - name: SERVICE_NAME
+          value: ratings
       volumes:
       - name: cfg
         configMap:

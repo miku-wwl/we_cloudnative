@@ -11,9 +11,13 @@ import (
 
 	"bookinfo.com/web/tools"
 	"github.com/gin-gonic/gin"
+	"github.com/opentracing/opentracing-go"
 	"github.com/spf13/cobra"
+	"github.com/uber/jaeger-client-go"
 	ginprometheus "github.com/zsais/go-gin-prometheus"
 )
+
+var service_name = "web"
 
 // serveCmd represents the serve command
 var serveCmd = &cobra.Command{
@@ -24,6 +28,10 @@ var serveCmd = &cobra.Command{
 		r := gin.Default()
 		p := ginprometheus.NewPrometheus("gin")
 		client := tools.NewClient(time.Second * 10)
+		err := tools.InitJaegerClient(globalCfg.ServiceName, globalCfg.JaegerHost)
+		if err != nil {
+			panic(err)
+		}
 		p.Use(r)
 		r.Static("/static", "./static")
 		r.GET("/", func(c *gin.Context) {
@@ -31,8 +39,14 @@ var serveCmd = &cobra.Command{
 			c.Data(http.StatusOK, "text/html,charset=utf-8", data)
 		})
 		r.GET("/productpage", func(c *gin.Context) {
+			span := opentracing.StartSpan("hander_" + globalCfg.ServiceName)
+			defer span.Finish()
 			url := fmt.Sprintf("%s%s", globalCfg.ServerMap["productpage"], "/productpage")
-			data, err := client.Get(url, nil)
+			data, err := client.Get(url, c.Request.Header, "productpage", span)
+			if jaegerContext, ok := span.Context().(jaeger.SpanContext); ok {
+				tranceid := jaegerContext.TraceID().String()
+				c.Header("X-Trance-ID", tranceid)
+			}
 			if err != nil {
 				c.Data(http.StatusInternalServerError, "text/html,charset=utf-8", []byte(err.Error()))
 			} else {

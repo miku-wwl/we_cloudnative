@@ -3,7 +3,3 @@ resources:
 - ./service
 - ingress.yaml
 - configmap.yaml
-
-# bases:
-# - ./deployment/
-# - ./service/

@@ -5,13 +5,18 @@ package cmd
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 
 	"bookinfo.com/ratings/models"
+	"bookinfo.com/ratings/tools"
 	"github.com/gin-gonic/gin"
+	"github.com/opentracing/opentracing-go"
 	"github.com/spf13/cobra"
 	ginprometheus "github.com/zsais/go-gin-prometheus"
 )
+
+var service_name = "ratings"
 
 // serveCmd represents the serve command
 var serveCmd = &cobra.Command{
@@ -22,6 +27,10 @@ var serveCmd = &cobra.Command{
 		r := gin.Default()
 		p := ginprometheus.NewPrometheus("gin")
 		// client := tools.NewClient(time.Second * 10)
+		err := tools.InitJaegerClient(globalCfg.ServiceName, globalCfg.JaegerHost)
+		if err != nil {
+			panic(err)
+		}
 		p.Use(r)
 		r.Static("/static", "./static")
 		dataMap := make(map[string]models.Rating)
@@ -34,6 +43,15 @@ var serveCmd = &cobra.Command{
 			Color: "red",
 		}
 		r.GET("/ratings", func(c *gin.Context) {
+			wireContext, err := opentracing.GlobalTracer().Extract(
+				opentracing.HTTPHeaders,
+				opentracing.HTTPHeadersCarrier(c.Request.Header),
+			)
+			if err != nil {
+				log.Printf("read span context err %v", err)
+			}
+			span := opentracing.StartSpan("hander_"+globalCfg.ServiceName, opentracing.ChildOf(wireContext))
+			defer span.Finish()
 			id := c.Query("id")
 			c.JSON(http.StatusOK, dataMap[id])
 		})

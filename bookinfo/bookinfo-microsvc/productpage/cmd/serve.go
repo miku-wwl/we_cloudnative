@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"html/template"
+	"log"
 	"net/http"
 	"os"
 	"time"
@@ -15,14 +16,15 @@ import (
 	"bookinfo.com/productpage/models"
 	"bookinfo.com/productpage/tools"
 	"github.com/gin-gonic/gin"
+	"github.com/opentracing/opentracing-go"
 	"github.com/spf13/cobra"
 	ginprometheus "github.com/zsais/go-gin-prometheus"
 )
 
 // 获取details服务的数据
-func getDetails(client *tools.Client) models.DetailsWithStatus {
+func getDetails(client *tools.Client, header http.Header, parentSpan opentracing.Span) models.DetailsWithStatus {
 	url := fmt.Sprintf("%s%s", globalCfg.ServerMap["details"], "/details")
-	dataBytes, err := client.Get(url, nil)
+	dataBytes, err := client.Get(url, header, "details", parentSpan)
 	detailsWithStatus := models.DetailsWithStatus{
 		Base: models.Base{
 			Status: 200,
@@ -49,9 +51,9 @@ func getDetails(client *tools.Client) models.DetailsWithStatus {
 	return detailsWithStatus
 }
 
-func getReviews(client *tools.Client) models.ReviewsWithStatus {
+func getReviews(client *tools.Client, header http.Header, parentSpan opentracing.Span) models.ReviewsWithStatus {
 	url := fmt.Sprintf("%s%s", globalCfg.ServerMap["reviews"], "/reviews")
-	dataBytes, err := client.Get(url, nil)
+	dataBytes, err := client.Get(url, header, "reviews", parentSpan)
 	reviewsWithStatus := models.ReviewsWithStatus{
 		Base: models.Base{
 			Status: 200,
@@ -77,6 +79,8 @@ func getReviews(client *tools.Client) models.ReviewsWithStatus {
 	return reviewsWithStatus
 }
 
+var service_name = "productpage"
+
 // serveCmd represents the serve command
 var serveCmd = &cobra.Command{
 	Use:   "serve",
@@ -86,9 +90,22 @@ var serveCmd = &cobra.Command{
 		r := gin.Default()
 		p := ginprometheus.NewPrometheus("gin")
 		client := tools.NewClient(time.Second * 10)
+		err := tools.InitJaegerClient(globalCfg.ServiceName, globalCfg.JaegerHost)
+		if err != nil {
+			panic(err)
+		}
 		p.Use(r)
 		r.Static("/static", "./static")
 		r.GET("/productpage", func(c *gin.Context) {
+			wireContext, err := opentracing.GlobalTracer().Extract(
+				opentracing.HTTPHeaders,
+				opentracing.HTTPHeadersCarrier(c.Request.Header),
+			)
+			if err != nil {
+				log.Printf("read span context err %v", err)
+			}
+			span := opentracing.StartSpan("hander_"+globalCfg.ServiceName, opentracing.ChildOf(wireContext))
+			defer span.Finish()
 			data, _ := os.ReadFile("templates/productpage.html")
 			funcs := template.FuncMap{
 				"html_format": func(s string) template.HTML {
@@ -117,8 +134,8 @@ var serveCmd = &cobra.Command{
 					Title: "三国演义",
 				},
 			}
-			product_page.Details = getDetails(client)
-			product_page.Reviews = getReviews(client)
+			product_page.Details = getDetails(client, c.Request.Header, span)
+			product_page.Reviews = getReviews(client, c.Request.Header, span)
 			buf := bytes.Buffer{}
 			err = tmpl.Execute(&buf, product_page)
 			if err != nil {

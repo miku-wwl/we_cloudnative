@@ -1,13 +1,14 @@
 build:
-	cd web && make build;
-	cd reviews && make build;
-	cd ratings && make build;
-	cd productpage && make build;
-	cd details && make build;
+	cd web && make build TAG=v1.5;
+	cd reviews && make build TAG=v1.5;
+	cd ratings && make build TAG=v1.5;
+	cd productpage && make build TAG=v1.5;
+	cd details && make build TAG=v1.5;
 
 buildbuildx: 
-	cd web && make buildx;
-	cd reviews && make buildx;
-	cd ratings && make buildx;
-	cd productpage && make buildx;
-	cd details && make buildx;
+	cd web && make buildx TAG=v1.5;
+	cd reviews && make buildx TAG=v1.5;
+	cd ratings && make buildx TAG=v1.5;
+	cd productpage && make buildx TAG=v1.5
+	cd details && make buildx TAG=v1.5;
+

@@ -6,6 +6,8 @@ import (
 	"log"
 	"net/http"
 	"time"
+
+	"github.com/opentracing/opentracing-go"
 )
 
 type Client struct {
@@ -19,15 +21,20 @@ func NewClient(timeout time.Duration) *Client {
 		},
 	}
 }
-func (c *Client) Get(url string, headers map[string]string) ([]byte, error) {
+func (c *Client) Get(url string, header http.Header, callSvcName string, parentSpan opentracing.Span) ([]byte, error) {
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		log.Printf("Error creating GET request %v", err)
 		return nil, err
 	}
-	for key, value := range headers {
-		req.Header.Set(key, value)
+	req.Header = header
+	span := opentracing.StartSpan("call_"+callSvcName, opentracing.ChildOf(parentSpan.Context()))
+	defer span.Finish()
+	injectErr := opentracing.GlobalTracer().Inject(span.Context(), opentracing.HTTPHeaders, opentracing.HTTPHeadersCarrier(req.Header))
+	if injectErr != nil {
+		log.Printf("Could not inject span context info to header failed %v", injectErr)
 	}
+
 	resp, err := c.httpClient.Do(req)
 	if err != nil {
 		log.Printf("Error sending GET request %v", err)
