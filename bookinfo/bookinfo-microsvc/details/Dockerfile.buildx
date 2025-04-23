@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM harbor.com/containers/golang:1.22.3-alpine3.20 as builder
+FROM --platform=$BUILDPLATFORM crpi-bbsyw9wy6j39ufia.cn-beijing.personal.cr.aliyuncs.com/containers-wwl/golang:1.22.3-alpine3.20 as builder
 ARG TARGETARCH
 WORKDIR /
 COPY . .
@@ -8,7 +8,7 @@ RUN if [ "$TARGETARCH" = "arm64" ];then \
    fi
 RUN go build -o bk
 
-FROM harbor.com/containers/alpine:3.20-bookinfo-base
+FROM crpi-bbsyw9wy6j39ufia.cn-beijing.personal.cr.aliyuncs.com/containers-wwl/alpine:3.20-bookinfo-base
 WORKDIR /
 COPY templates /templates
 COPY static /static

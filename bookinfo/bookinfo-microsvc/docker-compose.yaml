@@ -4,7 +4,7 @@ networks:
 services:
   web:
     container_name: web
-    image: harbor.com/containers/bookinfo-web:v1.4
+    image: crpi-bbsyw9wy6j39ufia.cn-beijing.personal.cr.aliyuncs.com/containers-wwl/bookinfo-web:v1.4
     volumes:
       - ./cfg/:/cfg
     environment:
@@ -18,7 +18,7 @@ services:
     restart: always
   productpage:
     container_name: productpage
-    image: harbor.com/containers/bookinfo-productpage:v1.4
+    image: crpi-bbsyw9wy6j39ufia.cn-beijing.personal.cr.aliyuncs.com/containers-wwl/bookinfo-productpage:v1.4
     volumes:
       - ./cfg/:/cfg
     environment:
@@ -31,7 +31,7 @@ services:
     restart: always
   reviews:
     container_name: reviews
-    image: harbor.com/containers/bookinfo-reviews:v1.4
+    image: crpi-bbsyw9wy6j39ufia.cn-beijing.personal.cr.aliyuncs.com/containers-wwl/bookinfo-reviews:v1.4
     volumes:
       - ./cfg/:/cfg
     environment:
@@ -43,7 +43,7 @@ services:
     restart: always
   details:
     container_name: details
-    image: harbor.com/containers/bookinfo-details:v1.4
+    image: crpi-bbsyw9wy6j39ufia.cn-beijing.personal.cr.aliyuncs.com/containers-wwl/bookinfo-details:v1.4
     volumes:
       - ./cfg/:/cfg
     environment:
@@ -53,7 +53,7 @@ services:
     restart: always
   ratings:
     container_name: ratings
-    image: harbor.com/containers/bookinfo-ratings:v1.4
+    image: crpi-bbsyw9wy6j39ufia.cn-beijing.personal.cr.aliyuncs.com/containers-wwl/bookinfo-ratings:v1.4
     volumes:
       - ./cfg/:/cfg
     environment:
