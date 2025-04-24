@@ -1,0 +1,33 @@
+# 定义路由规则
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata: 
+  name: bookinfo-productpage
+  namespace: test
+spec: 
+  host: bookinfo-productpage
+  subsets:
+  - name: v1
+    labels: 
+      app: bookinfo-productpage
+
+
+# 定义virtualSerice
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: bookinfo-productpage
+  namespace: test
+spec:
+  hosts:
+  - bookinfo-productpage
+  http:
+  - route:
+    - destination:
+        host: bookinfo-productpage
+        subset: v1
+    retries:
+      attempts: 2
+      perTryTimeout: 1s
+      retryOn: 5xx

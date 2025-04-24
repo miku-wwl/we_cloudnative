@@ -1,0 +1,13 @@
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: bookinfo-productpage-circuit
+  namespace: test
+spec:
+  host: bookinfo-productpage
+  trafficPolicy: 
+    outlierDetection: 
+      consecutive5xxErrors: 1
+      interval: 5s
+      baseEjectionTime: 5m
+      maxEjectionPercent: 100
