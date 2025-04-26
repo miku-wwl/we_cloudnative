@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: call-service
+  namespace: springboot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: call-service
+  template:
+    metadata:
+      labels:
+        app: call-service
+    spec:
+      imagePullSecrets:
+      - name: secret-tiger-docker
+      containers:
+      - name: call-service
+        image: crpi-bbsyw9wy6j39ufia.cn-beijing.personal.cr.aliyuncs.com/containers-wwl/call-service:v0.4
+        ports:
+        - containerPort: 8080    
