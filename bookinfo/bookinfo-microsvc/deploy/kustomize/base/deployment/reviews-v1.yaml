@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+   name: bookinfo-reviews-v1
+spec: 
+  replicas: 1
+  selector: 
+    matchLabels:
+      app: bookinfo-reviews
+      version: v1
+  template:
+    metadata: 
+      labels: 
+        app: bookinfo-reviews
+        version: v1
+    spec: 
+      imagePullSecrets:
+      - name: secret-tiger-docker
+      containers: 
+      - name: bookinfo-reviews
+        image: bookinfo-reviews
+        imagePullPolicy: Always
+        ports: 
+        - name: web
+          containerPort: 8080
+        volumeMounts: 
+        - name: cfg
+          mountPath: /cfg
+        env: 
+        - name: SERVICE_NAME
+          value: reviews
+      volumes:
+      - name: cfg
+        configMap:
+           name: bookinfo-cfg
