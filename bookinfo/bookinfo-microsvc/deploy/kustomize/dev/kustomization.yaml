@@ -8,7 +8,7 @@ commonLabels:
 images: 
 - name: bookinfo-web
   newName: crpi-bbsyw9wy6j39ufia.cn-beijing.personal.cr.aliyuncs.com/containers-wwl/bookinfo-web
-  newTag: v1.5
+  newTag: v1.5.1
 - name: bookinfo-reviews
   newName: crpi-bbsyw9wy6j39ufia.cn-beijing.personal.cr.aliyuncs.com/containers-wwl/bookinfo-reviews
   newTag: v1.5.1
