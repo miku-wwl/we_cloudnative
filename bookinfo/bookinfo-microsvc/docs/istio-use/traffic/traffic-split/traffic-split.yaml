@@ -35,3 +35,5 @@ spec:
         host: bookinfo-reviews
         subset: v2
       weight: 10
+
+# 直接kubectl apply -f traffic-split.yaml 实现分片发布

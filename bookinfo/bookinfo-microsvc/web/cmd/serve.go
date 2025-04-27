@@ -41,6 +41,11 @@ var serveCmd = &cobra.Command{
 		r.GET("/productpage", func(c *gin.Context) {
 			span := opentracing.StartSpan("hander_" + globalCfg.ServiceName)
 			defer span.Finish()
+			userType := c.Query("u")
+			if userType == "" {
+				userType = "normal"
+			}
+			c.Request.Header.Set("u", userType)
 			url := fmt.Sprintf("%s%s", globalCfg.ServerMap["productpage"], "/productpage")
 			data, err := client.Get(url, c.Request.Header, "productpage", span)
 			if jaegerContext, ok := span.Context().(jaeger.SpanContext); ok {
