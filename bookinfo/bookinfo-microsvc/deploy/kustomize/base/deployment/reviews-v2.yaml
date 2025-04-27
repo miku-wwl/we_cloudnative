@@ -1,16 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata: 
-   name: bookinfo-reviews
+   name: bookinfo-reviews-v2
 spec: 
   replicas: 1
   selector: 
     matchLabels:
       app: bookinfo-reviews
+      version: v2
   template:
     metadata: 
       labels: 
         app: bookinfo-reviews
+        version: v2
     spec: 
       imagePullSecrets:
       - name: secret-tiger-docker

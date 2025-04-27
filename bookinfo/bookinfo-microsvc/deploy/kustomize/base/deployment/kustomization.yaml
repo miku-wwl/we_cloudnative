@@ -2,5 +2,6 @@ resources:
 - details.yaml
 - productpage.yaml
 - ratings.yaml
-- reviews.yaml
+- reviews-v1.yaml
+- reviews-v2.yaml
 - web.yaml

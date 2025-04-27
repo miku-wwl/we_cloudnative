@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"strconv"
 	"time"
 
@@ -74,8 +75,12 @@ var serveCmd = &cobra.Command{
 			}
 			span := opentracing.StartSpan("hander_"+globalCfg.ServiceName, opentracing.ChildOf(wireContext))
 			defer span.Finish()
+			hostname, ok := os.LookupEnv("HOSTNAME")
+			if !ok {
+				hostname = "unknown"
+			}
 			reviewsBody := models.ReviewsBody{
-				Podname:     "pod-001",
+				Podname:     hostname,
 				Clustername: "cluster-001",
 				Reviews: []models.Review{
 					{
